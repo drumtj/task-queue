@@ -33,8 +33,8 @@ const TaskQueue = require('@drumtj/task-queue');
 import TaskQueue from '@drumtj/task-queue';
 ```
 
-## Example
-example : 1 queue, image list loader
+## How To
+ex) image list loader
 
 make sample data
 ```js
@@ -100,6 +100,8 @@ queue.process(-1);
 
 
 
+## Examples
+- [performance test when doing add many rendering object](https://codepen.io/taejin-kim/pen/VoBWZv)
 
 ## License
 
