@@ -1,0 +1,9 @@
+**/.*
+.DS_Store
+.git*
+.idea
+examples/
+node_modules/
+webpack.*.js
+tsconfig.json
+*.map
