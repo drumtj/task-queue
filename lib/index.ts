@@ -21,16 +21,30 @@ export default class TaskQueue {
 		this.iterator = this.getIterator();
   }
 
+	destroy(){
+		this.list = [];
+		this.isDone = false;
+		this.processCallback = null;
+		this.processCompleteCallback = null;
+		this.completeCallback = null
+		this.completeValues = [];
+		this.iterator = null;
+	}
+
+	reset(){
+		this.destroy();
+		this.iterator = this.getIterator();
+	}
 
 	* getIterator(){
-		console.error("getIterator");
+		// console.error("getIterator");
     while(1){
 			if(!(typeof this.processCallback === "function" && this.list.length)) break;
     	yield this.exeProcessCallback();
   	}
   }
 
-	process(){
+	process(sequencable?){
     let r;
     if(!this.isDone && this.list.length){
       r = this.iterator.next();
@@ -49,7 +63,12 @@ export default class TaskQueue {
         if(this.completeCallback){
           this.completeValues.push(processCompleteValue);
         }
-        this.process();
+				if(sequencable){
+        	this.process(sequencable);
+				}else if(this.list.length == 0){
+					//for end
+					this.process();
+				}
     	})
     }
 	}
