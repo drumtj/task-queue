@@ -54,7 +54,7 @@ function load(url){
       img.src = url;
   })
 }
-//complete callback function
+//process complete callback function
 function loaded(img){
 	console.error("loaded", img);
 }
