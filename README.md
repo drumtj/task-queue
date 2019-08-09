@@ -7,12 +7,7 @@ task management queue
 
 ## Features
 
-- you can set key and value from object or array
-- you can change the size of the map with the length property.
-- you can clone an object with the clone() method.
-- you can use map, filter, reduce like an array.
 
-Arrays have some nice features for manipulating data such as map, forEach, filter, and reduce, but the disadvantage of using loops to check for the inclusion of elements. And objects can find elements quickly using keys, but you have to use loops to process the data, which is inconvenient for handling deep data. Mapx improves on the inconveniences of traditional Map Classes and brings the benefits of arrays and objects.
 
 ## Installing
 
