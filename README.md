@@ -94,7 +94,11 @@ queue.addDataFromArray(urls);
 queue.setProcessCallback(load);
 queue.setProcessCompleteCallback(loaded);
 queue.setCompleteCallback(allLoaded);
-//call for sequencable
+//call for one step
+queue.process();
+//call for two step
+queue.process(2);
+//call for sequential step
 queue.process(-1);
 ```
 
