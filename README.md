@@ -20,7 +20,7 @@ $ npm install @drumtj/task-queue
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/@drumtj/task-queue@1.0.6/dist/task-queue.js"></script>
+<script src="https://unpkg.com/@drumtj/task-queue@1.0.7/dist/task-queue.js"></script>
 ```
 
 Using amd, commonjS Module
@@ -84,7 +84,7 @@ use TaskQueue
 // new TaskQueue(urls, load).process();
 // new TaskQueue(urls, load, loaded).process();
 // new TaskQueue(urls, load, null, allLoaded).process();
-new TaskQueue(urls, load, loaded, allLoaded).process();
+new TaskQueue(urls, load, loaded, allLoaded).process(-1); //call for sequencable
 ```
 
 other usecase
@@ -94,7 +94,8 @@ queue.addDataFromArray(urls);
 queue.setProcessCallback(load);
 queue.setProcessCompleteCallback(loaded);
 queue.setCompleteCallback(allLoaded);
-queue.process();
+//call for sequencable
+queue.process(-1);
 ```
 
 

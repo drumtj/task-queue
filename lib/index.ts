@@ -44,7 +44,7 @@ export default class TaskQueue {
   	}
   }
 
-	process(sequencable?){
+	process(sequenceUnit=0){
     let r;
     if(!this.isDone && this.list.length){
       r = this.iterator.next();
@@ -63,11 +63,22 @@ export default class TaskQueue {
         if(this.completeCallback){
           this.completeValues.push(processCompleteValue);
         }
-				if(sequencable){
-        	this.process(sequencable);
-				}else if(this.list.length == 0){
-					//for end
-					this.process();
+				if(typeof sequenceUnit === "number"){
+					if(sequenceUnit-1 > 0){
+						//not infinity
+	        	this.process(sequenceUnit-1);
+					}else if(sequenceUnit == -1){
+						//infinity
+						this.process(-1);
+					}else if(this.list.length == 0){
+						//for end
+						this.process();
+					}
+				}else{
+					if(this.list.length == 0){
+						//for end
+						this.process();
+					}
 				}
     	})
     }
