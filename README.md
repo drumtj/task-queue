@@ -49,9 +49,9 @@ define callback (use promise)
 function load(url){
   console.error("load", url);
   return new Promise(resolve=>{
-      let img = new Image();
-      img.onload = ()=>resolve(img);
-      img.src = url;
+    let img = new Image();
+    img.onload = ()=>resolve(img);
+    img.src = url;
   })
 }
 //process complete callback function
@@ -69,10 +69,10 @@ direct return case
 //process callback function
 async function load(url){  
   console.error("load", url);
-	let img = await new Promise(resolve=>{
-      let img = new Image();
-      img.onload = ()=>resolve(img);
-      img.src = url;
+  let img = await new Promise(resolve=>{
+    let img = new Image();
+    img.onload = ()=>resolve(img);
+    img.src = url;
   })
   return img;
 }
