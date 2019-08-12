@@ -14,6 +14,10 @@
   "keywords": [
     "task",
     "queue",
+    "taskqueue",
+    "task-queue",
+    "yield",
+    "iterator",
     "process"
   ],
   "homepage": "https://github.com/drumtj/task-queue",
@@ -46,6 +50,7 @@
     "webpack-sources": "^1.3.0"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.4"
+    "@babel/polyfill": "^7.4.4",
+    "@drumtj/mapx": "^1.0.11"
   }
 }

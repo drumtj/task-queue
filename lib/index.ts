@@ -1,5 +1,7 @@
+import Mapx from "@drumtj/mapx";
+
 export default class TaskQueue {
-	list = [];
+	list = new Mapx();
 	processCallback = null;
 	processCompleteCallback = null;
 	completeCallback = null;
@@ -22,7 +24,7 @@ export default class TaskQueue {
   }
 
 	destroy(){
-		this.list = [];
+		this.list = null;
 		this.isDone = false;
 		this.processCallback = null;
 		this.processCompleteCallback = null;
@@ -33,6 +35,7 @@ export default class TaskQueue {
 
 	reset(){
 		this.destroy();
+		this.list = new Mapx();
 		this.iterator = this.getIterator();
 	}
 
@@ -131,14 +134,30 @@ export default class TaskQueue {
 	}
 
 	addData(data:any){
-		this.list.push(data);
-		return this;
+		return this.list.push(data);
+		// return this;
   }
 
 	addDataFromArray(datas:any[]){
 		if(Array.isArray(datas)){
-			datas.forEach(v=>this.addData(v));
+			return datas.map(v=>this.list.push(v));
 		}
-		return this;
+		return [];
+	}
+
+	setData(key, data){
+		this.list.set(key, data);
+	}
+
+	hasData(key, data){
+		return this.list.has(key);
+	}
+
+	getData(key){
+		return this.list.get(key);
+	}
+
+	deleteData(key){
+		this.list.delete(key);
 	}
 }
