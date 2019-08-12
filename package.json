@@ -51,6 +51,6 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.4.4",
-    "@drumtj/mapx": "^1.0.11"
+    "@drumtj/mapx": "^1.0.12"
   }
 }
