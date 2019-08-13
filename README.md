@@ -20,7 +20,7 @@ $ npm install @drumtj/task-queue
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/@drumtj/task-queue@1.0.11/dist/task-queue.js"></script>
+<script src="https://unpkg.com/@drumtj/task-queue@1.0.12/dist/task-queue.js"></script>
 ```
 
 Using amd, commonjS Module
@@ -104,9 +104,10 @@ queue.process(-1);
 
 data management
 ```js
-let key = queue.addData("data");
-let keys = queue.addDataFromArray(["data1", "data2"]);
-queue.setData("key1", "data1");
+let priority = true;//optional; -> when is true data is inserted at the beginning of the internal queue
+let key = queue.addData("data", priority);
+let keys = queue.addDataFromArray(["data1", "data2"], priority);
+queue.setData("key1", "data1", priority);
 let data = queue.getData("key1");
 let has = queue.hasData("key1");
 queue.deleteData("key1");
