@@ -84,11 +84,11 @@ export default class TaskQueue {
 				if(typeof sequenceUnit === "number"){
 					if(sequenceUnit-1 > 0){
 						//not infinity
-						setTimeout(this.process, 0, sequenceUnit-1);
+						setTimeout(this.process.bind(this), 0, sequenceUnit-1);
 	        	// this.process(sequenceUnit-1);
 					}else if(sequenceUnit == -1){
 						//infinity
-						setTimeout(this.process, 0, -1);
+						setTimeout(this.process.bind(this), 0, -1);
 						// this.process(-1);
 					}else if(this.length == 0){
 						//for end
