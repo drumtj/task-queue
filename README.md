@@ -20,7 +20,7 @@ $ npm install @drumtj/task-queue
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/@drumtj/task-queue@1.0.18/dist/task-queue.js"></script>
+<script src="https://unpkg.com/@drumtj/task-queue@1.0.29/dist/task-queue.js"></script>
 ```
 
 Using amd, commonjS Module
@@ -105,7 +105,7 @@ queue.process(-1);
 
 //It is processed by traversing all data in all lists in a way that minimizes CPU locks.
 queue.sequentialProcess();
-// queue.sequentialProcess(30, "param");
+// queue.sequentialProcess(2, "param"); //minSequenceUnit, param
 ```
 
 data management

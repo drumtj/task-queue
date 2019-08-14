@@ -81,8 +81,8 @@ export default class TaskQueue {
 
 	//모든 list의 데이터를 연속적으로 처리하되 cpu block을 최소화함.
 	//minSequenceUnit는 최소 몇개의 데이터는 강제로 한 loop에서 실행되도록 할지 여부
-	sequentialProcess(maxSequenceUnit=0, param?){
-		// let u = maxSequenceUnit;
+	sequentialProcess(minSequenceUnit=1, param?){
+		// let u = minSequenceUnit;
 		let limitMs = 10;
 		if(typeof this.processCallback !== "function"){
 			throw new Error("processCallback is not function");
@@ -111,14 +111,14 @@ export default class TaskQueue {
 			}
 
 	    if (this.length) {
-	      setTimeout(fn, 5, maxSequenceUnit, param);
+	      setTimeout(fn, 5, minSequenceUnit, param);
 	    }else if(pcc){
 	    	this.completeCallback.call(this, this.completeValues.slice());
 	      this.completeValues = [];
 			}
 		}
 
-		fn(maxSequenceUnit, param);
+		fn(minSequenceUnit, param);
 	}
 
 	process(sequenceUnit=0, param?){
