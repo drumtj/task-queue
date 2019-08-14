@@ -87,20 +87,22 @@ export default class TaskQueue {
 		if(typeof this.processCallback !== "function"){
 			throw new Error("processCallback is not function");
 		}
+		let pcc = typeof this.processCompleteCallback === "function";
+		let cc = typeof this.completeCallback === "function";
 
 		const fn = (u, param) => {
 	    const startTime = Date.now();
-			if(typeof this.completeCallback === "function"){
+			if(pcc){
 				while ((u-- > 0 && Date.now() - startTime <= limitMs)  && this.length) {
 					let v = this.processCallback.call(this, this.shift(), param);
-					if(typeof this.processCompleteCallback === "function"){
+					if(pcc){
 	          this.processCompleteCallback.call(this, v);
 	        }
 					this.completeValues.push( v );
 	      }
 			}else{
 				while ((u-- > 0 && Date.now() - startTime <= limitMs) && this.length) {
-					if(typeof this.processCompleteCallback === "function"){
+					if(pcc){
 	          this.processCompleteCallback.call(this, this.processCallback.call(this, this.shift(), param));
 	        }else{
 						this.processCallback.call(this, this.shift(), param);
@@ -110,7 +112,7 @@ export default class TaskQueue {
 
 	    if (this.length) {
 	      setTimeout(fn, 5, maxSequenceUnit, param);
-	    }else if(typeof this.completeCallback === "function"){
+	    }else if(pcc){
 	    	this.completeCallback.call(this, this.completeValues.slice());
 	      this.completeValues = [];
 			}
