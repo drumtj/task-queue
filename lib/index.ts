@@ -65,21 +65,21 @@ export default class TaskQueue {
   }
 
 	fastSequentialProcess(param?){
-		// const fn = async (u) => {
-    const startTime = Date.now();
-		if(typeof this.processCallback !== "function"){
-			throw new Error("processCallback is not function");
-		}
+		const fn = (param) => {
+	    const startTime = Date.now();
+			if(typeof this.processCallback !== "function"){
+				throw new Error("processCallback is not function");
+			}
 
-		while (Date.now() - startTime <= 10 && this.length) {
-			this.processCallback.call(this, this.shift(), param);
-		}
+			while (Date.now() - startTime <= 10 && this.length) {
+				this.processCallback.call(this, this.shift(), param);
+			}
 
-    if (this.length) {
-      setTimeout(()=>{
-				this.fastSequentialProcess(param);
-			}, 5);
-    }
+	    if (this.length) {
+	      setTimeout(fn, 5, param);
+	    }
+		}
+		fn(param);
 	}
 
 	//모든 list의 데이터를 연속적으로 처리하되 cpu block을 최소화함.
