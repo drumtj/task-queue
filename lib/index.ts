@@ -67,9 +67,6 @@ export default class TaskQueue {
 	fastSequentialProcess(param?){
 		const fn = (param) => {
 	    const startTime = Date.now();
-			if(typeof this.processCallback !== "function"){
-				throw new Error("processCallback is not function");
-			}
 
 			while (Date.now() - startTime <= 10 && this.length) {
 				this.processCallback.call(this, this.shift(), param);
