@@ -68,7 +68,7 @@ export default class TaskQueue {
 		const fn = (param) => {
 	    const startTime = Date.now();
 
-			while (Date.now() - startTime <= 10 && this.length) {
+			while (Date.now() - startTime <= 5 && this.length) {
 				this.processCallback.call(this, this.shift(), param);
 			}
 
