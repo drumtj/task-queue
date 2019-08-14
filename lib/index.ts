@@ -64,21 +64,19 @@ export default class TaskQueue {
   	}
   }
 
-	fastSequentialProcess(minSequenceUnit=0, param?){
+	fastSequentialProcess(param?){
 		// const fn = async (u) => {
-		let u = minSequenceUnit;
-		let limitMs = 10;
     const startTime = Date.now();
 		if(typeof this.processCallback !== "function"){
 			throw new Error("processCallback is not function");
 		}
 
-		while ((u-- >= 0 || Date.now() - startTime <= limitMs) && this.length) {
+		while (Date.now() - startTime <= 10 && this.length) {
 			this.processCallback.call(this, this.shift(), param);
 		}
 
     if (this.length) {
-      setTimeout(this.fastSequentialProcess.bind(this), 5, minSequenceUnit, param);
+      setTimeout(this.fastSequentialProcess, 5, param);
     }
 	}
 
