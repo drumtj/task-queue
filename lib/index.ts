@@ -76,7 +76,9 @@ export default class TaskQueue {
 		}
 
     if (this.length) {
-      setTimeout(this.fastSequentialProcess, 5, param);
+      setTimeout(()=>{
+				this.fastSequentialProcess
+			}, 5, param);
     }
 	}
 
