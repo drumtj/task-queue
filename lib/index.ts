@@ -64,6 +64,24 @@ export default class TaskQueue {
   	}
   }
 
+	fastSequentialProcess(minSequenceUnit=0, param?){
+		// const fn = async (u) => {
+		let u = minSequenceUnit;
+		let limitMs = 10;
+    const startTime = Date.now();
+		if(typeof this.processCallback !== "function"){
+			throw new Error("processCallback is not function");
+		}
+
+		while ((u-- >= 0 || Date.now() - startTime <= limitMs) && this.length) {
+			this.processCallback.call(this, this.shift(), param);
+		}
+
+    if (this.length) {
+      setTimeout(this.fastSequentialProcess.bind(this), 5, minSequenceUnit, param);
+    }
+	}
+
 	//모든 list의 데이터를 연속적으로 처리하되 cpu block을 최소화함.
 	//minSequenceUnit는 최소 몇개의 데이터는 강제로 한 loop에서 실행되도록 할지 여부
 	sequentialProcess(minSequenceUnit=0, param?){
