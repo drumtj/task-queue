@@ -94,7 +94,7 @@ export default class TaskQueue {
 		}
 
     if (this.length) {
-      setTimeout(this.sequentialProcess.bind(this), 5, minSequenceUnit);
+      setTimeout(this.sequentialProcess.bind(this), 5, minSequenceUnit, param);
     }else if(typeof this.completeCallback === "function"){
     	this.completeCallback.call(this, this.completeValues.slice());
       this.completeValues = [];
