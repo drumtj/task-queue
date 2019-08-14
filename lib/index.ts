@@ -150,14 +150,19 @@ export default class TaskQueue {
 		}
 	}
 
-	addData(data:any, priority?:boolean){
+	push(data:any, priority?:boolean){
 		if(priority){
 			return this.priorityList.push(data);
 		}
 		return this.list.push(data);
   }
 
-	addDataFromArray(datas:any[], priority?:boolean){
+	addData(data:any, priority?:boolean){
+		console.warn("deprecated. use push()");
+		return this.push.apply(this, arguments);
+  }
+
+	pushFromArray(datas:any[], priority?:boolean){
 		if(Array.isArray(datas)){
 			if(priority){
 				return datas.map(v=>this.priorityList.push(v));
@@ -167,7 +172,12 @@ export default class TaskQueue {
 		return [];
 	}
 
-	setData(key, data, priority?:boolean){
+	addDataFromArray(datas:any[], priority?:boolean){
+		console.warn("deprecated. use pushFromArray()");
+		return this.pushFromArray.apply(this, arguments);
+	}
+
+	set(key, data, priority?:boolean){
 		if(priority){
 			this.priorityList.set(key, data);
 		}else{
@@ -175,22 +185,42 @@ export default class TaskQueue {
 		}
 	}
 
-	hasData(key){
+	setData(key, data, priority?:boolean){
+		console.warn("deprecated. use set()");
+		return this.set.apply(this, arguments);
+	}
+
+	has(key){
 		return this.priorityList.has(key) || this.list.has(key);
 	}
 
-	getData(key){
+	hasData(key){
+		console.warn("deprecated. use has()");
+		return this.has.apply(this, arguments);
+	}
+
+	get(key){
 		if(this.priorityList.has(key)){
 			return this.priorityList.get(key);
 		}
 		return this.list.get(key);
 	}
 
-	deleteData(key){
+	getData(key){
+		console.warn("deprecated. use get()");
+		return this.get.apply(this, arguments);
+	}
+
+	delete(key){
 		if(this.priorityList.has(key)){
 			this.priorityList.delete(key);
 		}else{
 			this.list.delete(key);
 		}
+	}
+
+	deleteData(key){
+		console.warn("deprecated. use delete()");
+		return this.delete.apply(this, arguments);
 	}
 }

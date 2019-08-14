@@ -20,7 +20,7 @@ $ npm install @drumtj/task-queue
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/@drumtj/task-queue@1.0.14/dist/task-queue.js"></script>
+<script src="https://unpkg.com/@drumtj/task-queue@1.0.15/dist/task-queue.js"></script>
 ```
 
 Using amd, commonjS Module
@@ -90,7 +90,7 @@ new TaskQueue(urls, load, loaded, allLoaded).process(-1); //call for sequencable
 other usecase
 ```js
 let queue = new TaskQueue();
-queue.addDataFromArray(urls);
+queue.pushFromArray(urls);
 queue.setProcessCallback(load);
 queue.setProcessCompleteCallback(loaded);
 queue.setCompleteCallback(allLoaded);
@@ -105,12 +105,15 @@ queue.process(-1);
 data management
 ```js
 let priority = true;//optional; -> when is true data is inserted at the beginning of the internal queue
-let key = queue.addData("data", priority);
-let keys = queue.addDataFromArray(["data1", "data2"], priority);
-queue.setData("key1", "data1", priority);
-let data = queue.getData("key1");
-let has = queue.hasData("key1");
-queue.deleteData("key1");
+let key = queue.push("data", priority);
+let keys = queue.pushFromArray(["data1", "data2"], priority);
+queue.set("key1", "data1", priority);
+let data = queue.get("key1");
+let has = queue.has("key1");
+let data2 = queue.shift(); //Extract first data and remove from array
+queue.delete("key1");
+queue.destroy(); //destroy
+queue.reset();//destroy and init
 ```
 
 
