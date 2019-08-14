@@ -23,7 +23,7 @@ export default class TaskQueue {
 	      configurable: false
 			})
 		})
-		this.addDataFromArray(dataArray);
+		this.pushFromArray(dataArray);
 		this.setProcessCallback(pcb);
 		this.setProcessCompleteCallback(pccb);
 		this.setCompleteCallback(ccb);
@@ -59,10 +59,47 @@ export default class TaskQueue {
 		// console.error("getIterator");
     while(1){
 			if(!(typeof this.processCallback === "function" && this.length)) break;
-    	yield this.exeProcessCallback();
+    	yield this.exeProcessCallback(this.processParam);
+			this.processParam = null;
   	}
   }
 
+	//모든 list의 데이터를 연속적으로 처리하되 cpu block을 최소화함.
+	//minSequenceUnit는 최소 몇개의 데이터는 강제로 한 loop에서 실행되도록 할지 여부
+	sequentialProcess(minSequenceUnit=0, param?){
+		// const fn = async (u) => {
+		let u = minSequenceUnit;
+		let limitMs = 10;
+    const startTime = Date.now();
+		if(typeof this.processCallback !== "function"){
+			throw new Error("processCallback is not function");
+		}
+
+		if(typeof this.completeCallback === "function"){
+			while ((u-- >= 0 || Date.now() - startTime <= limitMs)  && this.length) {
+				let v = this.processCallback.call(this, this.shift(), param);
+				if(typeof this.processCompleteCallback === "function"){
+          this.processCompleteCallback.call(this, v);
+        }
+				this.completeValues.push( v );
+      }
+		}else{
+			while ((u-- >= 0 || Date.now() - startTime <= limitMs) && this.length) {
+				if(typeof this.processCompleteCallback === "function"){
+          this.processCompleteCallback.call(this, this.processCallback.call(this, this.shift(), param));
+        }else{
+					this.processCallback.call(this, this.shift(), param);
+				}
+      }
+		}
+
+    if (this.length) {
+      setTimeout(this.sequentialProcess.bind(this), 5, minSequenceUnit);
+    }else if(typeof this.completeCallback === "function"){
+    	this.completeCallback.call(this, this.completeValues.slice());
+      this.completeValues = [];
+		}
+	}
 
 	process(sequenceUnit=0, param?){
     let r;
@@ -107,10 +144,9 @@ export default class TaskQueue {
     }
 	}
 
-	exeProcessCallback(){
+	exeProcessCallback(param){
 		return new Promise(resolve=>{
-			let promise = this.processCallback.call(this, this.shift(), this.processParam);
-			this.processParam = null;
+			let promise = this.processCallback.call(this, this.shift(), param);
 			if(promise instanceof Promise){
 				promise.then(r=>{
           if(this.processCompleteCallback){
