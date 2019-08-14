@@ -1,6 +1,6 @@
 {
   "name": "@drumtj/task-queue",
-  "version": "1.0.15",
+  "version": "1.0.16",
   "description": "task manager queue",
   "main": "./dist/task-queue.umd.js",
   "scripts": {
