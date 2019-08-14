@@ -9,13 +9,14 @@ export default class TaskQueue {
 	completeValues = [];
 	iterator = null;
 	isDone = false;
+	processParam;
 
 	get length(){
 		return this.priorityList.length + this.list.length;
 	}
 
 	constructor(dataArray?:any[], pcb?:(value:any)=>any, pccb?:(value:any)=>any, ccb?:(value:any)=>any){
-		['list', 'priorityList', 'processCallback', 'processCompleteCallback', 'completeCallback', 'iterator', 'completeValues', 'isDone'].forEach(name=>{
+		['list', 'priorityList', 'processCallback', 'processCompleteCallback', 'completeCallback', 'iterator', 'completeValues', 'isDone', 'processParam'].forEach(name=>{
 			Object.defineProperty(this, name, {
 				writable: true,
 	      enumerable: false,
@@ -62,8 +63,10 @@ export default class TaskQueue {
   	}
   }
 
-	process(sequenceUnit=0){
+
+	process(sequenceUnit=0, param?){
     let r;
+		this.processParam = param;
     if(!this.isDone && this.length){
       r = this.iterator.next();
 			this.isDone = r.done;
@@ -84,11 +87,11 @@ export default class TaskQueue {
 				if(typeof sequenceUnit === "number"){
 					if(sequenceUnit-1 > 0){
 						//not infinity
-						setTimeout(this.process.bind(this), 0, sequenceUnit-1);
+						setTimeout(this.process.bind(this), 0, sequenceUnit-1, param);
 	        	// this.process(sequenceUnit-1);
 					}else if(sequenceUnit == -1){
 						//infinity
-						setTimeout(this.process.bind(this), 0, -1);
+						setTimeout(this.process.bind(this), 0, -1, param);
 						// this.process(-1);
 					}else if(this.length == 0){
 						//for end
@@ -106,7 +109,8 @@ export default class TaskQueue {
 
 	exeProcessCallback(){
 		return new Promise(resolve=>{
-			let promise = this.processCallback.call(this, this.shift());
+			let promise = this.processCallback.call(this, this.shift(), this.processParam);
+			this.processParam = null;
 			if(promise instanceof Promise){
 				promise.then(r=>{
           if(this.processCompleteCallback){

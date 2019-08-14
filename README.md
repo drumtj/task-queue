@@ -20,7 +20,7 @@ $ npm install @drumtj/task-queue
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/@drumtj/task-queue@1.0.15/dist/task-queue.js"></script>
+<script src="https://unpkg.com/@drumtj/task-queue@1.0.16/dist/task-queue.js"></script>
 ```
 
 Using amd, commonjS Module
@@ -67,7 +67,7 @@ function allLoaded(result){
 direct return case
 ```js
 //process callback function
-async function load(url){  
+async function load(url, param){  
   console.error("load", url);
   let img = await new Promise(resolve=>{
     let img = new Image();
@@ -96,6 +96,8 @@ queue.setProcessCompleteCallback(loaded);
 queue.setCompleteCallback(allLoaded);
 //call for one step
 queue.process();
+//call for one step with param
+queue.process(1, "param");
 //call for two step
 queue.process(2);
 //call for sequential step
