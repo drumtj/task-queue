@@ -91,7 +91,7 @@ export default class TaskQueue {
 		const fn = (u, param) => {
 	    const startTime = Date.now();
 			if(typeof this.completeCallback === "function"){
-				while ((u-- >= 0 && Date.now() - startTime <= limitMs)  && this.length) {
+				while ((u-- > 0 && Date.now() - startTime <= limitMs)  && this.length) {
 					let v = this.processCallback.call(this, this.shift(), param);
 					if(typeof this.processCompleteCallback === "function"){
 	          this.processCompleteCallback.call(this, v);
@@ -99,7 +99,7 @@ export default class TaskQueue {
 					this.completeValues.push( v );
 	      }
 			}else{
-				while ((u-- >= 0 && Date.now() - startTime <= limitMs) && this.length) {
+				while ((u-- > 0 && Date.now() - startTime <= limitMs) && this.length) {
 					if(typeof this.processCompleteCallback === "function"){
 	          this.processCompleteCallback.call(this, this.processCallback.call(this, this.shift(), param));
 	        }else{
