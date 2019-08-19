@@ -20,7 +20,7 @@ $ npm install @drumtj/task-queue
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/@drumtj/task-queue@1.0.30/dist/task-queue.js"></script>
+<script src="https://unpkg.com/@drumtj/task-queue@1.0.31/dist/task-queue.js"></script>
 ```
 
 Using amd, commonjS Module
@@ -117,7 +117,7 @@ let keys = queue.pushFromArray(["data1", "data2"], priority);
 //// push from Mapx
 // import Mapx from "@drumtj/mapx";
 // var map = new Mapx();
-// queue.pushMapx(map) // return keys;
+// queue.pushFromMapx(map) // return keys;
 
 queue.set("key1", "data1", priority);
 let data = queue.get("key1");

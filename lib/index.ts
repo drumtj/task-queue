@@ -222,7 +222,7 @@ export default class TaskQueue {
 		return this.push.apply(this, arguments);
   }
 
-	pushMapx(mapx:Mapx, priority?:boolean):any[][]{
+	pushFromMapx(mapx:Mapx, priority?:boolean):any[][]{
 		if(priority){
 			return this.priorityList.setArray2D(mapx.toArray());
 		}else{
