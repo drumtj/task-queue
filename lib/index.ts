@@ -210,19 +210,27 @@ export default class TaskQueue {
 		}
 	}
 
-	push(data:any, priority?:boolean){
+	push(data:any, priority?:boolean):any{
 		if(priority){
 			return this.priorityList.push(data);
 		}
 		return this.list.push(data);
   }
 
-	addData(data:any, priority?:boolean){
+	addData(data:any, priority?:boolean):any{
 		console.warn("deprecated. use push()");
 		return this.push.apply(this, arguments);
   }
 
-	pushFromArray(datas:any[], priority?:boolean){
+	pushMapx(mapx:Mapx, priority?:boolean):any[][]{
+		if(priority){
+			return this.priorityList.setArray2D(mapx.toArray());
+		}else{
+			return this.list.setArray2D(mapx.toArray());
+		}
+	}
+
+	pushFromArray(datas:any[], priority?:boolean):any[][]{
 		if(Array.isArray(datas)){
 			if(priority){
 				return datas.map(v=>this.priorityList.push(v));
@@ -232,12 +240,12 @@ export default class TaskQueue {
 		return [];
 	}
 
-	addDataFromArray(datas:any[], priority?:boolean){
+	addDataFromArray(datas:any[], priority?:boolean):any[][]{
 		console.warn("deprecated. use pushFromArray()");
 		return this.pushFromArray.apply(this, arguments);
 	}
 
-	set(key, data, priority?:boolean){
+	set(key, data, priority?:boolean):any{
 		if(priority){
 			this.priorityList.set(key, data);
 		}else{
@@ -245,28 +253,28 @@ export default class TaskQueue {
 		}
 	}
 
-	setData(key, data, priority?:boolean){
+	setData(key, data, priority?:boolean):any{
 		console.warn("deprecated. use set()");
 		return this.set.apply(this, arguments);
 	}
 
-	has(key){
+	has(key):boolean{
 		return this.priorityList.has(key) || this.list.has(key);
 	}
 
-	hasData(key){
+	hasData(key):boolean{
 		console.warn("deprecated. use has()");
 		return this.has.apply(this, arguments);
 	}
 
-	get(key){
+	get(key):any{
 		if(this.priorityList.has(key)){
 			return this.priorityList.get(key);
 		}
 		return this.list.get(key);
 	}
 
-	getData(key){
+	getData(key):any{
 		console.warn("deprecated. use get()");
 		return this.get.apply(this, arguments);
 	}
