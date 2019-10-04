@@ -104,7 +104,7 @@ export default class TaskQueue {
 				while ((u-- > 0 && Date.now() - startTime <= limitMs) && this.length) {
 					if(pcc){
 	          this.processCompleteCallback.call(this, this.processCallback.call(this, this.shift(), param));
-	        }else{
+	        }else {
 						this.processCallback.call(this, this.shift(), param);
 					}
 	      }
@@ -112,7 +112,7 @@ export default class TaskQueue {
 
 	    if (this.length) {
 	      setTimeout(fn, 5, minSequenceUnit, param);
-	    }else if(pcc){
+	    }else if(cc){
 	    	this.completeCallback.call(this, this.completeValues.slice());
 	      this.completeValues = [];
 			}
@@ -128,19 +128,30 @@ export default class TaskQueue {
       r = this.iterator.next();
 			this.isDone = r.done;
     }
+		// console.error(this.length, this.isDone, r);
 
     if(this.isDone || r === undefined){
-      if(this.length == 0 && this.completeCallback){
+      if(!this.isDone && this.length == 0 && this.completeCallback){
+				// console.error("!!", this.isDone, r, this.completeValues);
       	this.completeCallback(this.completeValues.slice());
         this.completeValues = [];
       }
+			// else{
+			// 	this.isDone = false;
+			// }
+			this.isDone = true;
       this.iterator = this.getIterator();
-			this.isDone = false;
     }else if(r){
 			r.value.then((processCompleteValue)=>{
+
         if(this.completeCallback){
+					// console.error("push", processCompleteValue)
           this.completeValues.push(processCompleteValue);
         }
+				if(this.processCompleteCallback){
+					this.processCompleteCallback.call(this, processCompleteValue);
+				}
+
 				if(typeof sequenceUnit === "number"){
 					if(sequenceUnit-1 > 0){
 						//not infinity
@@ -156,6 +167,7 @@ export default class TaskQueue {
 					}
 				}else{
 					if(this.length == 0){
+						// console.error("end process");
 						//for end
 						this.process();
 					}
@@ -166,20 +178,23 @@ export default class TaskQueue {
 
 	exeProcessCallback(param){
 		return new Promise(resolve=>{
-			let promise = this.processCallback.call(this, this.shift(), param);
-			if(promise instanceof Promise){
-				promise.then(r=>{
-          if(this.processCompleteCallback){
-            this.processCompleteCallback.call(this, r);
-          }
-          resolve(r);
-        })
-      }else{
-				if(this.processCompleteCallback){
-          this.processCompleteCallback.call(this, promise);
-        }
-				resolve(promise);
-      }
+			setTimeout(()=>{
+				let promise = this.processCallback.call(this, this.shift(), param);
+				if(promise instanceof Promise){
+					promise.then(r=>{
+						//#191004 process함수의 completeValues생성 직후로 옮김. completeCallback실행시 results인자가 1개 적게나오는 이슈.
+	          // if(this.processCompleteCallback){
+	          //   this.processCompleteCallback.call(this, r);
+	          // }
+	          resolve(r);
+	        })
+	      }else{
+					// if(this.processCompleteCallback){
+	        //   this.processCompleteCallback.call(this, promise);
+	        // }
+					resolve(promise);
+	      }
+			})
     })
   }
 

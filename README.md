@@ -20,7 +20,7 @@ $ npm install @drumtj/task-queue
 Using cdn:
 
 ```html
-<script src="https://unpkg.com/@drumtj/task-queue@1.0.31/dist/task-queue.js"></script>
+<script src="https://unpkg.com/@drumtj/task-queue@1.0.32/dist/task-queue.js"></script>
 ```
 
 Using amd, commonjS Module

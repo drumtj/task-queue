@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <script type="text/javascript" src="../dist/task-queue.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      
+      let tq = new TaskQueue([1,2,3,4,5]);
+      tq.setProcessCallback(n=>{
+        console.error("process", n);
+        return "run " + n;
+        //return new Promise(resolve=>resolve("run " + n));
+      })
+      tq.setProcessCompleteCallback(result=>{
+        console.error("complete", result);
+        tq.process();
+      })
+
+      tq.setCompleteCallback(results=>{
+        console.error("all complete", results);
+      })
+
+      tq.process();
+
+
+      /*
+      let tq = new TaskQueue([1,2,3,4,5]);
+      tq.setProcessCallback(n=>{
+        console.error("process", n);
+        return "run " + n;
+        //return new Promise(resolve=>resolve("run " + n));
+      })
+      tq.setProcessCompleteCallback(result=>{
+        console.error("complete", result);
+      })
+      tq.setCompleteCallback(results=>{
+        console.error("all complete", results);
+      })
+
+      tq.sequentialProcess();
+      */
+
+    </script>
+  </body>
+</html>
