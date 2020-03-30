@@ -2,7 +2,7 @@
   "name": "@drumtj/task-queue",
   "version": "1.0.33",
   "description": "task manager queue",
-  "main": "./dist/task-queue.umd.js",
+  "main": "./dist/task-queue.js",
   "scripts": {
     "build": "webpack -p",
     "release": "npm run build && npm run deploy && np --no-cleanup --yolo --no-release-draft",

@@ -107,11 +107,11 @@ const config = {
 let libraryName = "TaskQueue";
 let pfh = `(function webpackUniversalModuleDefinition(root, factory) {
   if(typeof exports === 'object' && typeof module === 'object')
-    module.exports = factory();
+    module.exports = factory().default;
   else if(typeof define === 'function' && define.amd)
     define([], factory);
   else if(typeof exports === 'object')
-    exports['MyLibrary'] = factory();
+    exports['MyLibrary'] = factory().default;
   else{
     root['MyLibrary'] = factory().default;
   }
@@ -119,13 +119,13 @@ let pfh = `(function webpackUniversalModuleDefinition(root, factory) {
   return `.replace(/MyLibrary/g, libraryName);
 let pff = `\n})`
 
-let umdCfg = Object.assign({}, config);
-umdCfg.output = {
-  path: path.join(__dirname, "dist"),
-  library: libraryName,
-  libraryTarget: "umd",
-  filename: "./task-queue.umd.js"
-}
+// let umdCfg = Object.assign({}, config);
+// umdCfg.output = {
+//   path: path.join(__dirname, "dist"),
+//   library: libraryName,
+//   libraryTarget: "umd",
+//   filename: "./task-queue.umd.js"
+// }
 
 
 let globalCfg = Object.assign({}, config);
@@ -143,7 +143,8 @@ globalCfg.plugins = [
   }),
 ]
 
-module.exports = [ umdCfg, globalCfg ];
+// module.exports = [ umdCfg, globalCfg ];
+module.exports = [ globalCfg ];
 
 //
 // let amdCfg = Object.assign({}, config);
